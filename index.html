@@ -270,8 +270,6 @@
     const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(ENC.iv)},key,b64(ENC.ct));
     return new TextDecoder().decode(pt);
   }
-  const fails=['Fast! Versuch\'s nochmal 😉','Hmm, nicht ganz … denk an den Hinweis 💛','Kleiner Tipp: Es fängt mit „Ich“ an.'];
-  let failCount=0;
   document.getElementById('lock').addEventListener('submit',async e=>{
     e.preventDefault();
     const lock=document.getElementById('lock'),err=document.getElementById('err'),btn=document.getElementById('unlockBtn');
@@ -282,7 +280,7 @@
     for(const c of cands){try{giftCode=await tryPw(c);break}catch(_){}}
     btn.disabled=false;btn.textContent='🔓 Aufschließen';
     if(!giftCode){
-      err.textContent=fails[Math.min(failCount++,fails.length-1)];
+      err.textContent='Leider falsch – versuch\'s nochmal.';
       lock.classList.remove('shake');void lock.offsetWidth;lock.classList.add('shake');return;
     }
     err.textContent='';lock.classList.add('unlocked');
